@@ -1,8 +1,8 @@
 --------------------------------------------------------
--- Minetest :: Cold War Flag Mod (flags)
+-- Minetest :: Generic Flags Mod (flags)
 --
 -- See README.txt for licensing and other information.
--- Made by BubbaFrog with code from AwesomeDragon97 and Wuzzy.
+-- Made by AwesomeDragon97 with code from Wuzzy.
 --------------------------------------------------------
 
 flags = {}
@@ -37,7 +37,7 @@ flag_list = { -- generic inoffensive single color flags
 	"chechen",
 	"antisoviet",
 	"cuba",
-	"csr",
+	"csr",  "yugoslavia",
 	"westgermany",
 	"sawarafghani",
 	"croatia",
