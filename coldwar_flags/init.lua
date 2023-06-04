@@ -1,8 +1,8 @@
 --------------------------------------------------------
--- Minetest :: Modern War Flag Mod (flags)
+-- Minetest :: Generic Flags Mod (flags)
 --
 -- See README.txt for licensing and other information.
--- Made by BubbaFrog with code from AwesomeDragon97 and Wuzzy.
+-- Made by BubbaFrog code from AwesomeDragon97 and Wuzzy.
 --------------------------------------------------------
 
 flags = {}
@@ -22,26 +22,26 @@ local rad_180 = pi
 local rad_90 = pi / 2
 
 -- This flag is used as the default or fallback in case of error/missing data
-local DEFAULT_FLAG = minetest.settings:get('default_flag') or 'russia'
+local DEFAULT_FLAG = minetest.settings:get('default_flag') or 'usa'
 
 local flag_list = {}
 if minetest.settings:get_bool('color_flags', true) == true then
 flag_list = { -- generic inoffensive single color flags
-	"russia", --flag of Russia :)
-	"ukraine",
-	"united_states",
-	"un",
-	"nato",
-	"wagner",
-	"zov",     "isis",  "sinaloa", "belarus", "afghan",
-	"azov",
-	"cjng",   "france", "germany", "ukraine2", "uganda", "serbia", "cia",
-	"taliban",
-	"skorea", "marine", "homelandsecurity", "israel", "palestine", "fbi",
-	"nkorea",
-	"saudi",
-	"mexico",
-	"iraq"}
+	"usa", --flag of France :)
+	"sovietrussia",
+	"cambodia",
+	"sovietukraine",
+	"vietnam",
+	"namwarvet",
+	"eastgermany",
+	"chechen",
+	"antisoviet",
+	"cuba",
+	"csr",  "yugoslavia",
+	"westgermany",
+	"sawarafghani",
+	"croatia",
+	"vietcong"}
 end
 
 local next_flag, prev_flag
@@ -90,7 +90,7 @@ end
 local delete_if_orphan = function( self )
 	local pos = self.object:get_pos( )
 	local node = minetest.get_node({x=pos.x,y=pos.y-1,z=pos.z})
-	if node.name ~= "modernwar_flags:upper_mast" and node.name ~= "ignore" then
+	if node.name ~= "coldwar_flags:upper_mast" and node.name ~= "ignore" then
 		minetest.log("action", "[flags] Orphan flag entity removed at "..minetest.pos_to_string(pos, 1))
 		self.object:remove( )
 		return true
@@ -98,7 +98,7 @@ local delete_if_orphan = function( self )
 	return false
 end
 
-minetest.register_entity( "modernwar_flags:wavingflag", {
+minetest.register_entity( "coldwar_flags:wavingflag", {
 	initial_properties = {
 		physical = false,
 		visual = "mesh",
@@ -145,7 +145,7 @@ minetest.register_entity( "modernwar_flags:wavingflag", {
 		for o=1, #objs do
 			local obj = objs[o]
 			local lua = obj:get_luaentity( )
-			if lua and self ~= lua and lua.name == "modernwar_flags:wavingflag" then
+			if lua and self ~= lua and lua.name == "coldwar_flags:wavingflag" then
 				if lua.node_idx == self.node_idx then
 					self.object:remove( )
 					return
@@ -237,7 +237,7 @@ if minetest.get_modpath("default") ~= nil then
 	end
 end
 
-minetest.register_node("modernwar_flags:lower_mast", {
+minetest.register_node("coldwar_flags:lower_mast", {
         description = ("Flag Pole"),
         drawtype = "mesh",
         paramtype = "light",
@@ -296,7 +296,7 @@ local function spawn_flag( pos )
 	local param2 = minetest.get_node( pos ).param2
 
 	local flag_pos = get_flag_pos( pos, param2 )
-	local obj = minetest.add_entity( flag_pos, "modernwar_flags:wavingflag" )
+	local obj = minetest.add_entity( flag_pos, "coldwar_flags:wavingflag" )
 	if not obj or not obj:get_luaentity( ) then
 		return
 	end
@@ -352,20 +352,20 @@ local function cycle_flag( pos, player, cycle_backwards )
 	end
 end
 
-minetest.register_node( "modernwar_flags:upper_mast", {
+minetest.register_node( "coldwar_flags:upper_mast", {
 	description = ("Flag Pole with Flag"),
 	drawtype = "mesh",
 	paramtype = "light",
 	mesh = "flags_mast_upper.obj",
 	paramtype2 = "facedir",
 	tiles = { "flags_baremetal.png", "flags_baremetal.png" },
-	wield_image = "mwflags_pole_top_inv.png",
-	inventory_image = "mwflags_pole_top_inv.png",
+	wield_image = "cwflags_pole_top_inv.png",
+	inventory_image = "cwflags_pole_top_inv.png",
 	groups = { cracky = 2 },
 	sounds = metal_sounds,
 	is_ground_content = false,
 
-	drop = {"modernwar_flags:lower_mast 2", "modernwar_flags:upper_mast"},
+	drop = {"coldwar_flags:lower_mast 2", "coldwar_flags:upper_mast"},
 
         selection_box = {
                 type = "fixed",
@@ -393,7 +393,7 @@ minetest.register_node( "modernwar_flags:upper_mast", {
 
 		local node = minetest.get_node(pointed_thing.under)
 		local node2 = minetest.get_node(pointed_thing.under - vector.new(0, 1, 0))
-		if (node.name ~= "modernwar_flags:lower_mast" or node2.name ~= "modernwar_flags:lower_mast") then
+		if (node.name ~= "coldwar_flags:lower_mast" or node2.name ~= "coldwar_flags:lower_mast") then
 			return itemstack
 		end
 
@@ -410,14 +410,14 @@ minetest.register_node( "modernwar_flags:upper_mast", {
 		local yaw = placer:get_look_horizontal()
 		local dir = minetest.yaw_to_dir(yaw)
 		local param2 = (minetest.dir_to_facedir(dir) + 3) % 4
-		minetest.set_node(pointed_thing.under - vector.new(0, 1, 0), {name = "modernwar_flags:upper_mast", param2 = param2 })
-		minetest.set_node(pointed_thing.under, {name = "modernwar_flags:upper_mast_hidden_1"})
+		minetest.set_node(pointed_thing.under - vector.new(0, 1, 0), {name = "coldwar_flags:upper_mast", param2 = param2 })
+		minetest.set_node(pointed_thing.under, {name = "coldwar_flags:upper_mast_hidden_1"})
 
 		if not (minetest.is_creative_enabled(pn)) then
 			itemstack:take_item()
 		end
 
-		local def = minetest.registered_nodes["modernwar_flags:upper_mast"]
+		local def = minetest.registered_nodes["coldwar_flags:upper_mast"]
 		if def and def.sounds then
 			minetest.sound_play(def.sounds.place, {pos = pos}, true)
 		end
@@ -442,7 +442,7 @@ minetest.register_node( "modernwar_flags:upper_mast", {
 
 	after_destruct = function( pos )
 		local above1 = {x=pos.x, y=pos.y+1, z=pos.z}
-		if minetest.get_node( above1 ).name == "modernwar_flags:upper_mast_hidden_1" then
+		if minetest.get_node( above1 ).name == "coldwar_flags:upper_mast_hidden_1" then
 			minetest.remove_node( above1 )
 		end
 	end,
@@ -474,9 +474,9 @@ minetest.register_node( "modernwar_flags:upper_mast", {
 } )
 
 minetest.register_lbm({
-	name = "modernwar_flags:respawn_flags",
+	name = "coldwar_flags:respawn_flags",
 	label = "Respawn flags",
-	nodenames = {"modernwar_flags:upper_mast"},
+	nodenames = {"coldwar_flags:upper_mast"},
 	run_at_every_load = true,
 	action = function(pos, node)
 		local node_idx = minetest.hash_node_position( pos )
@@ -489,9 +489,9 @@ minetest.register_lbm({
 })
 
 minetest.register_lbm({
-	name = "modernwar_flags:update_node_meta",
+	name = "coldwar_flags:update_node_meta",
 	label = "Update mast node meta",
-	nodenames = {"modernwar_flags:upper_mast"},
+	nodenames = {"coldwar_flags:upper_mast"},
 	run_at_every_load = false,
 	action = function(pos, node)
 		local meta = minetest.get_meta( pos )
@@ -508,7 +508,7 @@ local flagpole_material = minetest.settings:get('flagpole_material') or "default
 
 if minetest.registered_items[flagpole_material] then
 	minetest.register_craft({
-		output = "modernwar_flags:lower_mast 3",
+		output = "coldwar_flags:lower_mast 3",
 		recipe = {
 			{flagpole_material},
 			{flagpole_material},
@@ -517,7 +517,7 @@ if minetest.registered_items[flagpole_material] then
 	})
 end
 minetest.register_craft({
-	output = "modernwar_flags:upper_mast",
+	output = "coldwar_flags:upper_mast",
 	recipe = {
 		{"group:wool", "group:wool", "group:wool"},
 		{"group:wool", "group:wool", "group:wool"},
@@ -530,7 +530,7 @@ minetest.register_craft({
 -- This node will be automatically
 -- added/removed when the upper mast is constructed
 -- or destructed.
-minetest.register_node( "modernwar_flags:upper_mast_hidden_1", {
+minetest.register_node( "coldwar_flags:upper_mast_hidden_1", {
 	drawtype = "airlike",
 	pointable = false,
 	paramtype = "light",
@@ -567,7 +567,7 @@ end
 
 flags.set_flag_at = function( pos, flag_name )
 	local node = minetest.get_node( pos )
-	if node.name ~= "modernwar_flags:upper_mast" then
+	if node.name ~= "coldwar_flags:upper_mast" then
 		return false
 	end
 	if not flag_exists( flag_name ) then
@@ -592,7 +592,7 @@ end
 
 flags.get_flag_at = function( pos )
 	local node = minetest.get_node( pos )
-	if node.name ~= "modernwar_flags:upper_mast" then
+	if node.name ~= "coldwar_flags:upper_mast" then
 		return nil
 	end
 	local meta = minetest.get_meta( pos )
